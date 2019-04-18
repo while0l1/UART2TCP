@@ -3,7 +3,7 @@
 ### 一个利用esp8266，将串口数据通过TCP发送出去的程序
 
 ## 下载地址
-
+可以从[这里](https://github.com/while0l1/UART2TCP/releases)下载到最新的固件
 
 ## 使用方法
 - 使用固件烧录软件进行烧录
