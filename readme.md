@@ -1,6 +1,8 @@
 # UART2TCP
 ## 简介
- 一个利用esp8266，将串口数据通过TCP发送出去的程序
+ 一个利用esp8266，实现串口到TCP，TCP到串口的数据转发的项目，可以理解为串口透传  
+ ## 注意
+ 本项目是使用VS Code + Platform IO 来构建的，需要在其它IDE上编译的，请自行解决库的问题
 
 ## 下载地址
 可以从[这里](https://github.com/while0l1/UART2TCP/releases)下载到最新的固件

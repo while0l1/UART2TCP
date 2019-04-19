@@ -90,7 +90,6 @@ void loop()
 {
     if (server.hasClient()) { //有新的设备连接上
         client = server.available();
-        client.setNoDelay(true);
     }
     while (client.available()) //TCP接收单片机发过来的信息，串口发给电脑
     {
