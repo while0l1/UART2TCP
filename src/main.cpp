@@ -1,5 +1,7 @@
 #include <ESP8266WiFi.h>
 
+#define SYSRuntime D4
+
 String ssid = "UART2TCP"; //WiFi名称
 String password = "1234567890"; //WiFi密码
 
@@ -10,11 +12,13 @@ int tcpPort = 8266; //服务器端口
 char valFromPC; //接收TCP发过来的数据
 String valFromMCU = ""; //接收串口发过来的数据
 int exitFlag; //退出配置模式标志
-unsigned int Baud = 9600; //串口波特率
+unsigned int Baud = 460800; //串口波特率
 
 WiFiServer server(tcpPort);
 WiFiClient client;
 
+WiFiServer server2(8267);
+WiFiClient client2;
 //开启热点
 //开启TCP服务
 void StartServer()
@@ -36,6 +40,8 @@ void StartServer()
 
     server.begin(tcpPort); //开启TCP服务器
     server.setNoDelay(true);
+    server2.begin(8267);
+    server2.setNoDelay(true);
 }
 
 //配置模式
@@ -79,30 +85,57 @@ void setup()
     //初始化串口
     Serial.begin(Baud);
     Serial.setRxBufferSize(1024 * 10);
-    Serial.setTimeout(10);
+    Serial.setTimeout(2);
+    pinMode(SYSRuntime, OUTPUT);
     delay(10);
-
     //启动TCP服务
     StartServer();
 }
 
+void SysRunningLED()
+{
+    static unsigned long beforetime = 0;
+    if (millis() - beforetime > 1000) {
+        analogWrite(SYSRuntime, 800);
+    }
+    if (millis() - beforetime > 2000) {
+        beforetime = millis();
+        analogWrite(SYSRuntime, 1024);
+    }
+}
+
 void loop()
 {
+    SysRunningLED();
     if (server.hasClient()) { //有新的设备连接上
         client = server.available();
+        Serial.println("client connected!");
+    }
+    if (server2.hasClient()) {
+        client2 = server2.available();
+        Serial.println("client2 connected!");
+    }
+
+    while (client2.available()) {
+        digitalWrite(SYSRuntime, LOW);
+        valFromPC = client2.read();
+        Serial.print(valFromPC);
     }
     while (client.available()) //TCP接收单片机发过来的信息，串口发给电脑
     {
+        digitalWrite(SYSRuntime, LOW);
         valFromPC = client.read();
         Serial.print(valFromPC);
     }
+
     while (Serial.available()) { //串口接收电脑发送过来的信息，TCP发送给单片机
-        delay(5);
+        digitalWrite(SYSRuntime, LOW);
         valFromMCU = Serial.readString();
         if (valFromMCU.substring(0, 8) == ":Setting") { //进入配置模式
             Serial.println("Entering setting mode");
             SettingMode();
         } else {
+            client2.print(valFromMCU);
             client.print(valFromMCU); //把串口数据通过TCP发出去
         }
     }
