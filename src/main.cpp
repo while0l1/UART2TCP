@@ -43,30 +43,16 @@ void setup()
         // Serial.print(".");
     }
 
-    if (MDNS.begin("esp-switch-"+WiFi.macAddress())) {
-        MDNS.addService("iotdevice", "tcp", tcpPort);
-    }
-}
-
-void SysRunningLED()
-{
-    static unsigned long beforetime = 0;
-    if (millis() - beforetime > 1000) {
-        analogWrite(SYSRuntime, 800);
-    }
-    if (millis() - beforetime > 2000) {
-        beforetime = millis();
-        analogWrite(SYSRuntime, 1024);
-    }
+    MDNS.begin("esp-switch-"+WiFi.macAddress());
+    MDNS.addService("iotdevice", "tcp", tcpPort);
+    MDNS.addServiceTxt("iotdevice", "tcp", "mykEY","myvALUE");
 }
 
 void loop()
 {
     MDNS.update();
-    SysRunningLED();
     if (server.hasClient()) { //有新的设备连接上
         client = server.available();
-        Serial.println("client connected!");
     }
     while (client.available()) //TCP接收单片机发过来的信息，串口发给电脑
     {
