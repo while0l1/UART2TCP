@@ -55,7 +55,7 @@ void setup()
     MDNS.addServiceTxt("iotdevice", "tcp", "author", "Farry");
     MDNS.addServiceTxt("iotdevice", "tcp", "email", "newfarry@126.com");
     MDNS.addServiceTxt("iotdevice", "tcp", "home-page", "https://github.com/iotdevice");
-    MDNS.addServiceTxt("iotdevice", "tcp", "firmware-respository", "https://github.com/iotdevice/ESP32-CAM");
+    MDNS.addServiceTxt("iotdevice", "tcp", "firmware-respository", "https://github.com/iotdevice/UART2TCP");
     MDNS.addServiceTxt("iotdevice", "tcp", "firmware-version", "1.0");
 }
 
