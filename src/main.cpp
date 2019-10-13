@@ -43,20 +43,21 @@ void setup()
         // Serial.print(".");
     }
 
-    MDNS.begin("esp-switch-"+WiFi.macAddress());
+    MDNS.begin("UART2TCP-"+WiFi.macAddress());
     MDNS.addService("iotdevice", "tcp", tcpPort);
     // MDNS.addServiceTxt("iotdevice", "tcp", "mykEY","myvALUE");
     MDNS.addServiceTxt("iotdevice", "tcp", "name", "串口转TCP");
     MDNS.addServiceTxt("iotdevice", "tcp", "model", "com.iotserv.devices.UART2TCP");
     MDNS.addServiceTxt("iotdevice", "tcp", "mac", WiFi.macAddress());
     MDNS.addServiceTxt("iotdevice", "tcp", "id", ESP.getSketchMD5());
-    MDNS.addServiceTxt("iotdevice", "tcp", "ui-support", "web,native");
-    MDNS.addServiceTxt("iotdevice", "tcp", "ui-first", "web");
+    MDNS.addServiceTxt("iotdevice", "tcp", "ui-support", "native");
+    MDNS.addServiceTxt("iotdevice", "tcp", "ui-first", "native");
     MDNS.addServiceTxt("iotdevice", "tcp", "author", "Farry");
     MDNS.addServiceTxt("iotdevice", "tcp", "email", "newfarry@126.com");
     MDNS.addServiceTxt("iotdevice", "tcp", "home-page", "https://github.com/iotdevice");
     MDNS.addServiceTxt("iotdevice", "tcp", "firmware-respository", "https://github.com/iotdevice/UART2TCP");
     MDNS.addServiceTxt("iotdevice", "tcp", "firmware-version", "1.0");
+    MDNS.addServiceTxt("iotdevice", "tcp", "mdns-only", "true");
 }
 
 void loop()
