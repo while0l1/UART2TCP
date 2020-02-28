@@ -20,6 +20,8 @@ deploy:
   provider: releases
   api_key:
     secure: Hlpj55dtbINH3VjVDY3Bh9q89v3k/tTQoT7IJRYp/8r7Ry+mwXfu6Jrxg5YAh4faUvrVeh+rOLBgz1gbNYZr3qhAK7nLdrXH2BEDAeLmb7yezH5bUxx59Nzyv2usaurDeihubwG5I+ZJEt2daNeKf5/PLLWH3Phn1TCHhaelVl6ueGV8nOvNIiFfajw2CuJNYdl6rbQUPcmNNVuJ0cDNoVRCafT9DhhSvtAzLV2C4/luiYC6eoR962urcE0IXkyxywFebEdLN7nX2e2yYKMUb2tqvy++H9VsYsX05wUOXZBC8NeDZudQxoeK3hdpfls2KvuU/btBlitcsb66tVWCaHsPoAZoT5MrdF1jXPUsjSKCQlnl8ghwK1H+tYKBaXEEjLfccheK45IvLObTKdbYtsPWHUDbTdU7VPonRfmGFBv3yUIVtepPbDcHfjjv6+jizNP2JnUG4mHrqFK0Cg2iJQijZe2n/fTIwGz15e75IdcqK09MVBaKTkzPUORFmqzlvhKtXESn2HsScPzdApmJVMmgOLMX43Vnh7N3cu2zIMeUL227bpSmpjz3IWjA5h40jnQ7SllEvFrjHcIbhUQPJxViZ96NFgPGTnleQiUFAjSZ4BWibQhmgwioqN004HX88hHgEvqUYpB1qD4yCAFtrfgDHf8Qvd4Yy9lYdizSAiY=
-  file: "*"
+  file: "build/.pio/build/d1/firmware.bin"
+  skip_cleanup: true
   on:
     repo: IoTDevice/UART2TCP
+    tags: true
