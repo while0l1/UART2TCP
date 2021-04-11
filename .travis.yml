@@ -1,67 +1,27 @@
-# Continuous Integration (CI) is the practice, in software
-# engineering, of merging all developer working copies with a shared mainline
-# several times a day < https://docs.platformio.org/page/ci/index.html >
-#
-# Documentation:
-#
-# * Travis CI Embedded Builds with PlatformIO
-#   < https://docs.travis-ci.com/user/integration/platformio/ >
-#
-# * PlatformIO integration with Travis CI
-#   < https://docs.platformio.org/page/ci/travis.html >
-#
-# * User Guide for `platformio ci` command
-#   < https://docs.platformio.org/page/userguide/cmd_ci.html >
-#
-#
-# Please choose one of the following templates (proposed below) and uncomment
-# it (remove "# " before each line) or use own configuration according to the
-# Travis CI documentation (see above).
-#
-
-
-#
-# Template #1: General project. Test it using existing `platformio.ini`.
-#
-
-# language: python
-# python:
-#     - "2.7"
-#
-# sudo: false
-# cache:
-#     directories:
-#         - "~/.platformio"
-#
-# install:
-#     - pip install -U platformio
-#     - platformio update
-#
-# script:
-#     - platformio run
-
-
-#
-# Template #2: The project is intended to be used as a library with examples.
-#
-
-# language: python
-# python:
-#     - "2.7"
-#
-# sudo: false
-# cache:
-#     directories:
-#         - "~/.platformio"
-#
-# env:
-#     - PLATFORMIO_CI_SRC=path/to/test/file.c
-#     - PLATFORMIO_CI_SRC=examples/file.ino
-#     - PLATFORMIO_CI_SRC=path/to/test/directory
-#
-# install:
-#     - pip install -U platformio
-#     - platformio update
-#
-# script:
-#     - platformio ci --lib="." --board=ID_1 --board=ID_2 --board=ID_N
+language: python
+python:
+- '3.6'
+sudo: false
+cache:
+  directories:
+  - "~/.platformio"
+install:
+- pip install -U platformio
+- platformio update
+script:
+- mkdir build
+- platformio ci --keep-build-dir --build-dir ./build --project-conf=platformio.ini
+  src/*.cpp
+before_deploy:
+- platformio ci -h
+- ls -a
+- find . -name "*.bin"
+deploy:
+  provider: releases
+  api_key:
+    secure: Hlpj55dtbINH3VjVDY3Bh9q89v3k/tTQoT7IJRYp/8r7Ry+mwXfu6Jrxg5YAh4faUvrVeh+rOLBgz1gbNYZr3qhAK7nLdrXH2BEDAeLmb7yezH5bUxx59Nzyv2usaurDeihubwG5I+ZJEt2daNeKf5/PLLWH3Phn1TCHhaelVl6ueGV8nOvNIiFfajw2CuJNYdl6rbQUPcmNNVuJ0cDNoVRCafT9DhhSvtAzLV2C4/luiYC6eoR962urcE0IXkyxywFebEdLN7nX2e2yYKMUb2tqvy++H9VsYsX05wUOXZBC8NeDZudQxoeK3hdpfls2KvuU/btBlitcsb66tVWCaHsPoAZoT5MrdF1jXPUsjSKCQlnl8ghwK1H+tYKBaXEEjLfccheK45IvLObTKdbYtsPWHUDbTdU7VPonRfmGFBv3yUIVtepPbDcHfjjv6+jizNP2JnUG4mHrqFK0Cg2iJQijZe2n/fTIwGz15e75IdcqK09MVBaKTkzPUORFmqzlvhKtXESn2HsScPzdApmJVMmgOLMX43Vnh7N3cu2zIMeUL227bpSmpjz3IWjA5h40jnQ7SllEvFrjHcIbhUQPJxViZ96NFgPGTnleQiUFAjSZ4BWibQhmgwioqN004HX88hHgEvqUYpB1qD4yCAFtrfgDHf8Qvd4Yy9lYdizSAiY=
+  file: "./build/.pio/build/nodemcuv2/firmware.bin"
+  skip_cleanup: true
+  on:
+    repo: IoTDevice/UART2TCP
+    tags: true
